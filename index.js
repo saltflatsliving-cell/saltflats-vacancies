@@ -5,21 +5,12 @@ import cors from "cors";
 const app = express();
 app.use(cors()); // allows your B12 site to fetch this API
 
-// Rent Manager API credentials from Render environment variables
-const RM_USERNAME = process.env.RM_USERNAME;
-const RM_PASSWORD = process.env.RM_PASSWORD;
-
-// Basic Auth header
-const RM_AUTH = "Basic " + Buffer.from(`${RM_USERNAME}:${RM_PASSWORD}`).toString("base64");
-
 // Feed URL (only vacant units)
-const RM_API_URL = "https://api.rentmanager.com/v3/feeds/regent-default-1/units?$filter=Status eq 'Vacant'";
+const RM_API_URL = "https://myfeed.rentmanager.com/?token=vEEw8Za8t%2b0%2bfaAqqFS5Ly%2b5VZUYiTaZpHvKaDPDPC4XgjhSbZWoFCE%2bg544TOIamv1BnmZqbws%3d";
 
 app.get("/vacancies", async (req, res) => {
   try {
-    const response = await fetch(RM_API_URL, {
-      headers: { Authorization: RM_AUTH }
-    });
+    const response = await fetch(RM_API_URL);
     const data = await response.json();
 
     // Only send the fields we want
